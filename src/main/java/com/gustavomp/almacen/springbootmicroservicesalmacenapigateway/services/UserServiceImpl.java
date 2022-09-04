@@ -5,6 +5,7 @@ import com.gustavomp.almacen.springbootmicroservicesalmacenapigateway.models.Use
 import com.gustavomp.almacen.springbootmicroservicesalmacenapigateway.repositories.UserRepository;
 import com.gustavomp.almacen.springbootmicroservicesalmacenapigateway.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,11 +41,24 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.findByUsername(username);
     }
 
+    @Override
+    public User findByUsernameReturnToken(String username) {
+        User user = this.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no existe"));
+
+        String jwt = this.jwtProvider.generateToken(user);
+        user.setToken(jwt);
+
+        return user;
+    }
+
+
     @Transactional()
     @Override
     public void changeRole(String username, Role newRole) {
         this.userRepository.updateUserRole(username, newRole);
     }
+
 
 }
 

@@ -1,15 +1,14 @@
 package com.gustavomp.almacen.springbootmicroservicesalmacenapigateway.requests;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
-@FeignClient(name = "almacen-inmueble", //  nombre del recurso
+@FeignClient(name = "inmueble-service", //  nombre del recurso
         path = "/api/inmuebles", // path del recurso
-        url = "${inmueble.service.url}",
+        // url = "${inmueble.service.url}", // no se necesita la url ya que eureka resuelve por el dominio
         configuration = FeignConfiguration.class // clase que contiene la configuracion
 )
 public interface InmuebleServiceRequest {

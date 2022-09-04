@@ -10,5 +10,7 @@ public interface UserService {
 
     Optional<User> findByUsername(String username);
 
+    User findByUsernameReturnToken(String username);
+
     void changeRole(String username, Role newRole);
 }
